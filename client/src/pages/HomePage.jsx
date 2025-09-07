@@ -1,13 +1,17 @@
 import { useEffect, useRef, useState } from "react";
-import SearchBar from "../components/SearchBar";;
+import SearchBar from "../components/SearchBar";
+import TripCard from "../components/TripCard";
+import Loading from "../components/state/Loading";
+import ErrorState from "../components/state/Error";
+import Empty from "../components/state/Empty";
 import { getTrips } from "../services/tripService";
-
+import useDebouncedEffect from "../hooks/useDebouncedEffect";
 
 export default function HomePage() {
-  const [keyword, setKeyword] = useState("");
-  const inputRef = useRef(null);
   const [trips, setTrips] = useState([]);
   const [status, setStatus] = useState("idle");
+  const [keyword, setKeyword] = useState("");
+  const inputRef = useRef(null);
 
   const fetchData = async (kw = "") => {
     try {
@@ -44,6 +48,28 @@ export default function HomePage() {
           placeholder="หาที่เที่ยวแล้วไปกัน ..."
         />
       </div>
+
+      {status === "loading" && <Loading />}
+      {status === "error" && <ErrorState />}
+      {status === "success" && trips.length === 0 && <Empty />}
+
+      {status === "success" && trips.length > 0 && (
+        <div className="flex flex-col gap-6">
+          {trips.map((item, i) => (
+            <TripCard
+              key={i}
+              item={item}
+              keyword={keyword}
+              onAddKeyword={(tag) => {
+                const tokens = keyword.trim().split(" ").filter(Boolean);
+                if (!tokens.includes(tag)) {
+                  setKeyword((prev) => (prev ? prev + " " + tag : tag));
+                }
+              }}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
