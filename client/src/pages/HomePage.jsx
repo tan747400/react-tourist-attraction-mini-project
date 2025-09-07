@@ -1,4 +1,5 @@
-import { useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import SearchBar from "../components/SearchBar";;
 
 export default function HomePage() {
   const [keyword, setKeyword] = useState("");
@@ -10,18 +11,13 @@ export default function HomePage() {
         เที่ยวไหนดี
       </h1>
 
-      {/* SearchBar (inline) */}
       <div className="mb-10 w-full">
-        <label className="block w-full max-w-6xl mx-auto text-gray-700 text-base mb-2 text-left">
-          ค้นหาที่เที่ยว
-        </label>
-        <input
-          type="text"
-          ref={inputRef}
+        <SearchBar
+          inputRef={inputRef}
           value={keyword}
-          onChange={(e) => setKeyword(e.target.value)}
+          onChange={setKeyword}
+          label="ค้นหาที่เที่ยว"
           placeholder="หาที่เที่ยวแล้วไปกัน ..."
-          className="block w-full max-w-6xl mx-auto p-3 border-b-2 border-gray-400 placeholder:text-center text-left"
         />
       </div>
     </div>
