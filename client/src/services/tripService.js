@@ -15,7 +15,7 @@ import axios from "axios";
 const API_URL =
   window.location.hostname === "localhost"
     ? "http://localhost:4001"
-    : "https://YOUR-BACKEND.onrender.com";
+    : "https://tour-api-jndp.onrender.com";
 
 export async function getTrips(keyword = "") {
   const url = `${API_URL}/trips?keywords=${encodeURIComponent(keyword)}`;
